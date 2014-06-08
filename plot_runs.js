@@ -92,7 +92,7 @@ Plot.draw = function(prep_data, plot) {
     // Create the group element that will contain every plot component.
     plot.contents = plot.svg_elt.append("svg:g")
         .attr("transform",
-              "translate(" + plot.dims.margin_x + ", " + plot.dims.h + ")");
+              "translate(" + plot.dims.margin_x + ", 0)");
 
     // Perform any plot-specific data manipulation.
     if (plot.hasOwnProperty('get_plot_data')) {
@@ -103,47 +103,59 @@ Plot.draw = function(prep_data, plot) {
 
     // Calculate the plot axis domains.
     plot.axis = {
-        x_dom: d3.extent(plot.data, plot.x.get ),
-        y_dom: d3.extent(plot.data, plot.y.get )
+        x_dom: d3.extent(plot.data, plot.x.get),
+        y_dom: d3.extent(plot.data, plot.y.get)
     };
+
+    // Pad the axis domains so that points don't sit on the edges of the plot.
+    // The Number() function is used so that the padding works for numeric
+    // and date scales.
+    var x_range = Number(plot.axis.x_dom[1]) - Number(plot.axis.x_dom[0]),
+        y_range = plot.axis.y_dom[1] - plot.axis.y_dom[0];
+    plot.axis.x_dom[0] = Number(plot.axis.x_dom[0]) - 0.025 * x_range;
+    plot.axis.x_dom[1] = Number(plot.axis.x_dom[1]) + 0.025 * x_range;
+    plot.axis.y_dom[0] = plot.axis.y_dom[0] - 0.025 * y_range;
+    plot.axis.y_dom[1] = plot.axis.y_dom[1] + 0.025 * y_range;
 
     // Create the axis scales.
     plot.axis.x = plot.x.scale.domain(plot.axis.x_dom)
         .range([0, plot.dims.w - plot.dims.padding]);
     plot.axis.y = plot.y.scale.domain(plot.axis.y_dom)
-        .range([0, plot.dims.h - plot.dims.padding]);
+        .range([plot.dims.h, 0]);
 
     // How to draw a line.
     plot.draw_line = d3.svg.line()
-        .x(function(d, i) { return plot.axis.x(plot.x.get(d)); })
-        .y(function(d) { return - plot.axis.y(plot.y.get(d)); });
+        .x(function(d) { return plot.axis.x(plot.x.get(d)); })
+        .y(function(d) { return plot.axis.y(plot.y.get(d)); });
 
     // Draw the x-axis.
     plot.contents.append("svg:line")
         .attr("x1", plot.axis.x(plot.axis.x_dom[0]))
-        .attr("y1", -1 * plot.axis.y(plot.axis.y_dom[0]))
+        .attr("y1", plot.axis.y(plot.axis.y_dom[0]))
         .attr("x2", plot.axis.x(plot.axis.x_dom[1]))
-        .attr("y2", -1 * plot.axis.y(plot.axis.y_dom[0]));
+        .attr("y2", plot.axis.y(plot.axis.y_dom[0]));
 
     // Draw the y-axis.
     plot.contents.append("svg:line")
         .attr("x1", plot.axis.x(plot.axis.x_dom[0]))
-        .attr("y1", -1 * plot.axis.y(plot.axis.y_dom[0]))
+        .attr("y1", plot.axis.y(plot.axis.y_dom[0]))
         .attr("x2", plot.axis.x(plot.axis.x_dom[0]))
-        .attr("y2", -1 * plot.axis.y(plot.axis.y_dom[1]));
+        .attr("y2", plot.axis.y(plot.axis.y_dom[1]));
 
     // Draw the x-axis label.
     plot.contents.append("text")
-        .attr("x", dims.w / 2)
-        .attr("y", dims.margin_y - plot.axis.y(plot.axis.y_dom[0]))
+        .attr("class", "xTitle")
+        .attr("x", plot.dims.w / 2)
+        .attr("y", plot.dims.margin_y + plot.axis.y(plot.axis.y_dom[0]))
         .attr("dy", "-0.4em")
         .style("text-anchor", "middle")
         .text(plot.x.label);
 
     // Draw the y-axis label.
     plot.contents.append("text")
-        .attr("y", - 0.6 * dims.margin_x)
-        .attr("x", dims.h / 2)
+        .attr("class", "yTitle")
+        .attr("y", - 0.6 * plot.dims.margin_x)
+        .attr("x", - plot.dims.h / 2)
         .attr("dy", "-0.8em")
         .style("text-anchor", "middle")
         .attr("transform", "rotate(-90)")
@@ -156,7 +168,7 @@ Plot.draw = function(prep_data, plot) {
         .attr("class", "xLabel")
         .text(plot.x.fmt_tick)
         .attr("x", function(d) { return plot.axis.x(d) })
-        .attr("y", 0.5 * dims.margin_y - plot.axis.y(plot.axis.y_dom[0]))
+        .attr("y", 0.5 * plot.dims.margin_y + plot.axis.y(plot.axis.y_dom[0]))
         .attr("text-anchor", "middle");
 
     // Draw the y-axis tick labels.
@@ -165,8 +177,8 @@ Plot.draw = function(prep_data, plot) {
         .enter().append("svg:text")
         .attr("class", "yLabel")
         .text(plot.y.fmt_tick)
-        .attr("x", - 0.25 * dims.margin_x)
-        .attr("y", function(d) { return -1 * plot.axis.y(d) })
+        .attr("x", - 0.25 * plot.dims.margin_x)
+        .attr("y", function(d) { return plot.axis.y(d) })
         .attr("text-anchor", "end")
         .attr("dy", 4);
 
@@ -179,16 +191,16 @@ Plot.draw = function(prep_data, plot) {
         .attr("y1", plot.axis.y(plot.axis.y_dom[0]))
         .attr("x2", function(d) { return plot.axis.x(d); })
         /* Scale the size of the ticks relative to the y domain. */
-        .attr("y2", plot.axis.y(plot.axis.y_dom[0]) + 0.2 * dims.margin_y);
+        .attr("y2", plot.axis.y(plot.axis.y_dom[0]) + 0.2 * plot.dims.margin_y);
 
     // Draw the y-axis tick lines.
     plot.contents.selectAll(".yTicks")
         .data(plot.axis.y.ticks(plot.y.tick))
         .enter().append("svg:line")
         .attr("class", "yTicks")
-        .attr("y1", function(d) { return -1 * plot.axis.y(d); })
-        .attr("x1", - 0.125 * dims.margin_x)
-        .attr("y2", function(d) { return -1 * plot.axis.y(d); })
+        .attr("y1", function(d) { return plot.axis.y(d); })
+        .attr("x1", - 0.125 * plot.dims.margin_x)
+        .attr("y2", function(d) { return plot.axis.y(d); })
         .attr("x2", 0);
 
     // Plot the vertical grid lines.
@@ -197,19 +209,19 @@ Plot.draw = function(prep_data, plot) {
         .enter().append("svg:line")
         .attr("class", "grid")
         .attr("x1", function(d) { return plot.axis.x(d); })
-        .attr("y1",  - plot.axis.y(plot.axis.y_dom[0]))
+        .attr("y1",  plot.axis.y(plot.axis.y_dom[0]))
         .attr("x2", function(d) { return plot.axis.x(d); })
         /* Scale the size of the ticks relative to the y domain. */
-        .attr("y2", - plot.axis.y(plot.axis.y_dom[1]));
+        .attr("y2", plot.axis.y(plot.axis.y_dom[1]));
 
     // Plot the horizontal grid lines.
     plot.contents.selectAll(".yGrid")
         .data(plot.axis.y.ticks(plot.y.grid))
         .enter().append("svg:line")
         .attr("class", "grid")
-        .attr("y1", function(d) { return -1 * plot.axis.y(d); })
+        .attr("y1", function(d) { return plot.axis.y(d); })
         .attr("x1", plot.axis.x(plot.axis.x_dom[0]))
-        .attr("y2", function(d) { return -1 * plot.axis.y(d); })
+        .attr("y2", function(d) { return plot.axis.y(d); })
         /* Scale the size of the ticks relative to the y domain. */
         .attr("x2", plot.axis.x(plot.axis.x_dom[1]));
 
@@ -222,7 +234,7 @@ Plot.draw = function(prep_data, plot) {
     plot.data.forEach(function(d) {
         plot.contents.append("svg:circle")
             .attr("cx", plot.axis.x(plot.x.get(d)))
-            .attr("cy", - plot.axis.y(plot.y.get(d)))
+            .attr("cy", plot.axis.y(plot.y.get(d)))
             .attr("r", 5)
     });
 }
