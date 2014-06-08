@@ -107,6 +107,14 @@ Plot.draw = function(prep_data, plot) {
         y_dom: d3.extent(plot.data, plot.y.get)
     };
 
+    // Account for error bars, if any.
+    if (plot.hasOwnProperty('ymin') && plot.hasOwnProperty('ymax')) {
+        plot.axis.y_dom[0] = Math.min(plot.axis.y_dom[0],
+                                      d3.min(plot.data, plot.ymin));
+        plot.axis.y_dom[1] = Math.max(plot.axis.y_dom[1],
+                                      d3.max(plot.data, plot.ymax));
+    }
+
     // Pad the axis domains so that points don't sit on the edges of the plot.
     // The Number() function is used so that the padding works for numeric
     // and date scales.
@@ -225,14 +233,66 @@ Plot.draw = function(prep_data, plot) {
         /* Scale the size of the ticks relative to the y domain. */
         .attr("x2", plot.axis.x(plot.axis.x_dom[1]));
 
-    // Draw the line series.
-    plot.contents.append("svg:path")
-        .data([plot.data])
-        .attr("d", plot.draw_line)
+    // Draw a line for each data series.
+    if (plot.hasOwnProperty('group')) {
+        // Multiple data series.
+        var data_series = d3.nest()
+            .key(plot.group)
+            .entries(plot_data);
+        for (var i = 0; i < data_series.length; i++) {
+            plot.contents.append("svg:path")
+                .data([data_series[i].values])
+                .attr("class", data_series[i].key + " series")
+                .attr("d", plot.draw_line)
+        }
+    } else {
+        // A single data series.
+        plot.contents.append("svg:path")
+            .data([plot.data])
+            .attr("class", "series")
+            .attr("d", plot.draw_line)
+    }
+
+    // Draw the error bars, if any.
+    if (plot.hasOwnProperty('ymin') && plot.hasOwnProperty('ymax')) {
+        plot.data.forEach(function(d) {
+            var x = plot.axis.x(plot.x.get(d));
+            var y1 = plot.axis.y(plot.ymin(d));
+            var y2 = plot.axis.y(plot.ymax(d));
+            var classes = "errorbar";
+            if (plot.hasOwnProperty('group')) {
+                classes = classes + " " + plot.group(d);
+            }
+
+            plot.contents.append("svg:line")
+                .attr("class", classes)
+                .attr("x1", x)
+                .attr("x2", x)
+                .attr("y1", y1)
+                .attr("y2", y2);
+            plot.contents.append("svg:line")
+                .attr("class", classes)
+                .attr("x1", x - 5)
+                .attr("x2", x + 5)
+                .attr("y1", y1)
+                .attr("y2", y1);
+            plot.contents.append("svg:line")
+                .attr("class", classes)
+                .attr("x1", x - 5)
+                .attr("x2", x + 5)
+                .attr("y1", y2)
+                .attr("y2", y2);
+        })
+    };
 
     // Draw points along the line.
     plot.data.forEach(function(d) {
+        var classes = "point";
+        if (plot.hasOwnProperty('group')) {
+            classes = classes + " " + plot.group(d);
+        }
         plot.contents.append("svg:circle")
+            .attr("class", classes)
             .attr("cx", plot.axis.x(plot.x.get(d)))
             .attr("cy", plot.axis.y(plot.y.get(d)))
             .attr("r", 5)
