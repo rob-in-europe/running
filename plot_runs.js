@@ -346,6 +346,8 @@ var p_dist = {
     get_plot_data: function(data_rows) {
         var best_rows = d3.nest()
             .key(function(d) { return d.distance; })
+            .sortKeys(function (a,b) {
+                return (+b) < (+a) ? 1 : (+b) > (+a) ? -1 : 0; })
             .entries(data_rows);
         for (var i = 0; i < best_rows.length; i++) {
             best_rows[i].best_time = Math.min.apply(
