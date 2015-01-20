@@ -48,8 +48,8 @@ Plot.date_axis = function(label, get) {
     return {
         get: get,
         scale: d3.time.scale(),
-        tick: d3.time.month,
-        grid: d3.time.week,
+        tick: 5,
+        grid: 10,
         fmt_tick: d3.time.format("%Y-%m-%d"),
         label: label
     };
