@@ -340,9 +340,9 @@ var p_dist = {
     x: Plot.date_axis("Date", function(d) { return d.date; }),
     y: Plot.time_axis("Average Speed (min/km)",
                       function(d) { return d.speed; }),
-}, p_best = {
+}, p_best_time = {
     dims: dims,
-    selector: "#best",
+    selector: "#best-time",
     get_plot_data: function(data_rows) {
         var best_rows = d3.nest()
             .key(function(d) { return d.distance; })
@@ -359,10 +359,31 @@ var p_dist = {
     },
     x: Plot.num_axis("Distance (km)", 0, function(d) { return d.key; }),
     y: Plot.num_axis("Time (min)", 0, function(d) { return d.best_time; }),
+}, p_best_speed = {
+    dims: dims,
+    selector: "#best-speed",
+    get_plot_data: function(data_rows) {
+        var best_rows = d3.nest()
+            .key(function(d) { return d.distance; })
+            .sortKeys(function (a,b) {
+                return (+b) < (+a) ? 1 : (+b) > (+a) ? -1 : 0; })
+            .entries(data_rows);
+        for (var i = 0; i < best_rows.length; i++) {
+            best_rows[i].best_speed = Math.min.apply(
+                null, best_rows[i].values.map(
+                    function (d) { return d.speed; }));
+            best_rows[i].key = parseFloat(best_rows[i].key);
+        }
+        return best_rows;
+    },
+    x: Plot.num_axis("Distance (km)", 0, function(d) { return d.key; }),
+    y: Plot.time_axis("Average Speed (min/km)",
+                      function(d) { return d.best_speed; }),
 }
 
 // Draw the plots.
-Plot.draw_many("data/runs.csv", Plot.prepare_data, [p_dist, p_speed, p_best]);
+Plot.draw_many("data/runs.csv", Plot.prepare_data,
+               [p_dist, p_speed, p_best_time, p_best_speed]);
 
 // Hide the warning about javascript being disabled.
 d3.selectAll(".hidejs").style("display", "none")
