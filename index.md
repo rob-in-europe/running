@@ -15,9 +15,14 @@ js_libs: D3
     <strong>Figure 2:</strong> Average speed.
   </p>
 
-  <span id="best" class="chart"></span>
+  <span id="best-time" class="chart"></span>
   <p class="caption">
     <strong>Figure 3:</strong> Best time for each distance.
+  </p>
+
+  <span id="best-speed" class="chart"></span>
+  <p class="caption">
+    <strong>Figure 4:</strong> Best speed for each distance.
   </p>
 
 </div>
