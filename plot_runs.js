@@ -296,6 +296,10 @@ Plot.draw = function(prep_data, plot) {
             .attr("cx", plot.axis.x(plot.x.get(d)))
             .attr("cy", plot.axis.y(plot.y.get(d)))
             .attr("r", 5)
+            // Add a mouse-over title.
+            .append("svg:title")
+            .text(plot.x.fmt_tick(plot.x.get(d)) + ", "
+                  + plot.y.fmt_tick(plot.y.get(d)));
     });
 }
 
