@@ -36,13 +36,27 @@ Plot.num_axis = function(label, precision, get, ttip_precision) {
     if (typeof ttip_precision === 'undefined') {
         ttip_precision = precision + 2;
     }
+    if (ttip_precision < 0) {
+        // Convert from decimal to mm:ss.
+        var ttip_fn = function(d) {
+            var mins = Math.floor(d);
+            var secs = Math.round(60 * (d - mins));
+            if (secs < 10) {
+                return mins + ":0" + secs;
+            } else {
+                return mins + ":" + secs;
+            }
+        };
+    } else {
+        var ttip_fn = function(d) { return d.toFixed(ttip_precision); };
+    }
     return {
         get: get,
         scale: d3.scale.linear(),
         tick: 5,
         grid: 10,
         fmt_tick: function(d) { return d.toFixed(precision); },
-        fmt_ttip: function(d) { return d.toFixed(ttip_precision); },
+        fmt_ttip: ttip_fn,
         label: label
     };
 }
@@ -369,7 +383,8 @@ var p_dist = {
         return best_rows;
     },
     x: Plot.num_axis("Distance (km)", 0, function(d) { return d.key; }),
-    y: Plot.num_axis("Time (min)", 0, function(d) { return d.best_time; }),
+    y: Plot.num_axis("Time (min)", 0, function(d) { return d.best_time; },
+                     -1),
 }, p_best_speed = {
     dims: dims,
     selector: "#best-speed",
