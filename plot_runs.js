@@ -32,13 +32,17 @@ Plot.prepare_data = function(data_rows) {
 }
 
 // A standard linear numerical axis, with adjustable precision.
-Plot.num_axis = function(label, precision, get) {
+Plot.num_axis = function(label, precision, get, ttip_precision) {
+    if (typeof ttip_precision === 'undefined') {
+        ttip_precision = precision + 2;
+    }
     return {
         get: get,
         scale: d3.scale.linear(),
         tick: 5,
         grid: 10,
         fmt_tick: function(d) { return d.toFixed(precision); },
+        fmt_ttip: function(d) { return d.toFixed(ttip_precision); },
         label: label
     };
 }
@@ -51,6 +55,7 @@ Plot.date_axis = function(label, get) {
         tick: 5,
         grid: 10,
         fmt_tick: d3.time.format("%Y-%m-%d"),
+        fmt_ttip: d3.time.format("%Y-%m-%d"),
         label: label
     };
 }
@@ -58,20 +63,22 @@ Plot.date_axis = function(label, get) {
 // A time axis, where the underlying data is in seconds and is displayed as
 // MM:SS. Note that hours are not accounted for, the minutes simply increase.
 Plot.time_axis = function(label, get) {
+    var fmt_fn = function(secs) {
+        var mins = Math.floor(secs / 60);
+        secs = Math.round(secs - 60 * mins);
+        if (secs < 10) {
+            return mins + ":0" + secs;
+        } else {
+            return mins + ":" + secs;
+        }
+    };
     return {
         get: get,
         scale: d3.scale.linear(),
         tick: 5,
         grid: 10,
-        fmt_tick: function(secs) {
-            var mins = Math.floor(secs / 60);
-            secs = Math.round(secs - 60 * mins);
-            if (secs < 10) {
-                return mins + ":0" + secs;
-            } else {
-                return mins + ":" + secs;
-            }
-        },
+        fmt_tick: fmt_fn,
+        fmt_ttip: fmt_fn,
         label: label
     };
 }
@@ -298,8 +305,8 @@ Plot.draw = function(prep_data, plot) {
             .attr("r", 5)
             // Add a mouse-over title.
             .append("svg:title")
-            .text(plot.x.fmt_tick(plot.x.get(d)) + ", "
-                  + plot.y.fmt_tick(plot.y.get(d)));
+            .text(plot.x.fmt_ttip(plot.x.get(d)) + ", "
+                  + plot.y.fmt_ttip(plot.y.get(d)));
     });
 }
 
