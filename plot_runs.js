@@ -16,6 +16,7 @@ Plot.prepare_data = function(data_rows) {
     var time_format = d3.time.format("%H:%M:%S");
 
     data_rows.forEach(function(d) {
+        d.date_str = d.date;
         d.date = date_format.parse(d.date);
         d.distance = +d.distance;
         d.time = time_format.parse(d.time);
@@ -312,6 +313,11 @@ Plot.draw = function(prep_data, plot) {
         if (plot.hasOwnProperty('group')) {
             classes = classes + " " + plot.group(d);
         }
+        var title = plot.x.fmt_ttip(plot.x.get(d)) + ", "
+            + plot.y.fmt_ttip(plot.y.get(d));
+        if (typeof plot.ttip_add_date !== 'undefined' && plot.ttip_add_date) {
+            title = title + " on " + d.date_str;
+        }
         plot.contents.append("svg:circle")
             .attr("class", classes)
             .attr("cx", plot.axis.x(plot.x.get(d)))
@@ -319,8 +325,7 @@ Plot.draw = function(prep_data, plot) {
             .attr("r", 5)
             // Add a mouse-over title.
             .append("svg:title")
-            .text(plot.x.fmt_ttip(plot.x.get(d)) + ", "
-                  + plot.y.fmt_ttip(plot.y.get(d)));
+            .text(title);
     });
 }
 
@@ -375,16 +380,16 @@ var p_dist = {
                 return (+b) < (+a) ? 1 : (+b) > (+a) ? -1 : 0; })
             .entries(data_rows);
         for (var i = 0; i < best_rows.length; i++) {
-            best_rows[i].best_time = Math.min.apply(
-                null, best_rows[i].values.map(
-                    function (d) { return d.time_mins; }));
-            best_rows[i].key = parseFloat(best_rows[i].key);
+            best_rows[i] = best_rows[i].values.sort(function(a, b) {
+                return a.time_mins - b.time_mins;
+            })[0];
         }
         return best_rows;
     },
-    x: Plot.num_axis("Distance (km)", 0, function(d) { return d.key; }),
-    y: Plot.num_axis("Time (min)", 0, function(d) { return d.best_time; },
+    x: Plot.num_axis("Distance (km)", 0, function(d) { return d.distance; }),
+    y: Plot.num_axis("Time (min)", 0, function(d) { return d.time_mins; },
                      -1),
+    ttip_add_date: true,
 }, p_best_speed = {
     dims: dims,
     selector: "#best-speed",
@@ -395,16 +400,16 @@ var p_dist = {
                 return (+b) < (+a) ? 1 : (+b) > (+a) ? -1 : 0; })
             .entries(data_rows);
         for (var i = 0; i < best_rows.length; i++) {
-            best_rows[i].best_speed = Math.min.apply(
-                null, best_rows[i].values.map(
-                    function (d) { return d.speed; }));
-            best_rows[i].key = parseFloat(best_rows[i].key);
+            best_rows[i] = best_rows[i].values.sort(function(a, b) {
+                return a.speed - b.speed;
+            })[0];
         }
         return best_rows;
     },
-    x: Plot.num_axis("Distance (km)", 0, function(d) { return d.key; }),
+    x: Plot.num_axis("Distance (km)", 0, function(d) { return d.distance; }),
     y: Plot.time_axis("Average Speed (min/km)",
-                      function(d) { return d.best_speed; }),
+                      function(d) { return d.speed; }),
+    ttip_add_date: true,
 }
 
 // Draw the plots.
