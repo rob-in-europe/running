@@ -42,8 +42,17 @@ have also proven quite useful, as have a number of discussions on
 [/r/running](https://www.reddit.com/r/running) and
 [/r/fitness](https://www.reddit.com/r/fitness) (search for *shin splints*).
 
-
-
+More generally, it's important to know
+[how to warm up](http://skorarunning.com/blog/warm-up), to be aware of useful
+[stretches](http://athletestreatingathletes.com/five-favorite-stretches-for-runners/)
+and [yoga exercises](http://sagerountree.com/shop/videos-2/yoga-videos/) for
+runners, and exercises for
+[hip flexors and glute strength](https://www.t-nation.com/training/dispelling-the-glute-myth).
+Jonathan Savage maintains an extensive
+[wiki](http://fellrnr.com/wiki/Main_Page), including an interesting article
+about [how often to run](http://fellrnr.com/wiki/How_Often_To_Run) and lots
+of [product reviews](http://fellrnr.com/wiki/Product_Reviews) including a
+huge number of [running shoes](http://fellrnr.com/wiki/Shoes).
 
 <!-- Generate the plots. -->
 <script type="text/javascript" src="./plot_runs.js" charset="utf-8"></script>
