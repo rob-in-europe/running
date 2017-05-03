@@ -4,23 +4,23 @@ title: Running Log
 js_libs: D3
 ---
 
-<div class="charts morsel">
-  <span id="run" class="chart"></span>
+<div class="plots main-content">
+  <span id="run" class="plot"></span>
   <p class="caption">
     <strong>Figure 1:</strong> Distance.
   </p>
 
-  <span id="speed" class="chart"></span>
+  <span id="speed" class="plot"></span>
   <p class="caption">
     <strong>Figure 2:</strong> Average speed.
   </p>
 
-  <span id="best-time" class="chart"></span>
+  <span id="best-time" class="plot"></span>
   <p class="caption">
     <strong>Figure 3:</strong> Best time for each distance.
   </p>
 
-  <span id="best-speed" class="chart"></span>
+  <span id="best-speed" class="plot"></span>
   <p class="caption">
     <strong>Figure 4:</strong> Best speed for each distance.
   </p>
@@ -53,6 +53,17 @@ Jonathan Savage maintains an extensive
 about [how often to run](http://fellrnr.com/wiki/How_Often_To_Run) and lots
 of [product reviews](http://fellrnr.com/wiki/Product_Reviews) including a
 huge number of [running shoes](http://fellrnr.com/wiki/Shoes).
+
+## Running shoes
+
++ 2016: Merrell Bare Access 3 (UK 9, US 9.5, J06281, Granite/Lantern)
+  + 0mm drop, 8mm cushion, 13.5mm stack
+  + See [these](http://www.briankunkle.com/2015/03/merrell-bare-access-3-review.html)
+    [reviews](http://www.thehibbitts.net/troy/running/review-merrell-bare-access.htm).
++ 2013: Merrell Barefoot Current Glove (UK 9, US 9.5, J38399, Black/Granite)
+  + 0mm drop, 4mm stack
+  + See [these](https://ajoyfulprocession.wordpress.com/2012/05/31/merrell-mens-barefoot-water-current-glove/)
+    [reviews](http://www.anotherfnrunner.com/2012/06/merrell-barefoot-water-current-glove.html).
 
 <!-- Generate the plots. -->
 <script type="text/javascript" src="./plot_runs.js" charset="utf-8"></script>
