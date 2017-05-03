@@ -1,109 +1,122 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
 
     <title>
 
   Running Log
 
 </title>
+    <link rel="shortcut icon" type="image/png"
+          href="/favicon.png" />
     <link rel="stylesheet" type="text/css"
 href="http://fonts.googleapis.com/css?family=Droid+Sans|Droid+Serif|Raleway" />
     <link rel="stylesheet" type="text/css"
-          href="/assets/css/common.css" />
-    <link rel="stylesheet" type="text/css" media="(min-width: 60em)"
-          href="/assets/css/screen_large.css" />
-    <link rel="stylesheet" type="text/css" media="not all and (min-width: 60em)"
-          href="/assets/css/screen_small.css" />
-    <link rel="stylesheet" type="text/css" media="not print, (monochrome)"
-          href="/assets/css/solarized-light.css" />
-    <link rel="stylesheet" type="text/css" media="print, (monochrome)"
-          href="/assets/css/print.css" />
-
+          href="/assets/css/style.css" />
+    
+    
     <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"
             charset="utf-8"></script>
-
-
+    
+    
+    
   </head>
 <body>
 
-  <div id="content">
 
-    <ul class="navbar">
+<header class="site">
+<nav>
+  <ul>
+    
+    
+    
+    
+    
+    <li><a title="Home"
+           href="/">
+        <img alt="Home"
+             src="/assets/images/home.png">
+    </a></li>
+    
+    
+    
+    
+    
+    
+    <li><a title="Travel"
+           href="/travel">
+        <img alt="Travel"
+             src="/assets/images/travel.png">
+    </a></li>
+    
+    
+    
+    
+    
+    
+    <li><a title="Recipes"
+           href="/recipes">
+        <img alt="Recipes"
+             src="/assets/images/recipes.png">
+    </a></li>
+    
+    
+    
+    
+    
+    
+    <li><a title="French"
+           href="/french">
+        <img alt="French"
+             src="/assets/images/french.png">
+    </a></li>
+    
+    
+    
+    
+    
+    
+    <li><a title="Misc"
+           href="/misc">
+        <img alt="Misc"
+             src="/assets/images/misc.png">
+    </a></li>
+    
+    
+    
+  </ul>
+</nav>
+</header>
+
+
+<section>
+
+<header>
+  <h1>Running Log</h1>
+</header>
 
 
 
 
-
-
-        <li><a href="/">Home</a></li>
-
-
-
-
-
-
-        <li><a href="/travel">Travel</a></li>
-
-
-
-
-
-
-        <li><a href="/recipes">Recipes</a></li>
-
-
-
-
-
-
-        <li><a href="/french">French</a></li>
-
-
-
-
-
-
-        <li><a href="/misc">Misc</a></li>
-
-
-
-    </ul>
-
-
-
-    <div>
-      <h1>
-
-  Running Log
-
-</h1>
-    </div>
-
-
-    <div class="charts morsel">
-
-  <span id="run" class="chart"></span>
+<div class="plots main-content">
+  <span id="run" class="plot"></span>
   <p class="caption">
     <strong>Figure 1:</strong> Distance.
   </p>
 
-  <span id="speed" class="chart"></span>
+  <span id="speed" class="plot"></span>
   <p class="caption">
     <strong>Figure 2:</strong> Average speed.
   </p>
 
-  <span id="best-time" class="chart"></span>
+  <span id="best-time" class="plot"></span>
   <p class="caption">
     <strong>Figure 3:</strong> Best time for each distance.
   </p>
 
-  <span id="best-speed" class="chart"></span>
+  <span id="best-speed" class="plot"></span>
   <p class="caption">
     <strong>Figure 4:</strong> Best speed for each distance.
   </p>
@@ -137,23 +150,43 @@ about <a href="http://fellrnr.com/wiki/How_Often_To_Run">how often to run</a> an
 of <a href="http://fellrnr.com/wiki/Product_Reviews">product reviews</a> including a
 huge number of <a href="http://fellrnr.com/wiki/Shoes">running shoes</a>.</p>
 
+<h2 id="running-shoes">Running shoes</h2>
+
+<ul>
+  <li>2016: Merrell Bare Access 3 (UK 9, US 9.5, J06281, Granite/Lantern)
+    <ul>
+      <li>0mm drop, 8mm cushion, 13.5mm stack</li>
+      <li>See <a href="http://www.briankunkle.com/2015/03/merrell-bare-access-3-review.html">these</a>
+<a href="http://www.thehibbitts.net/troy/running/review-merrell-bare-access.htm">reviews</a>.</li>
+    </ul>
+  </li>
+  <li>2013: Merrell Barefoot Current Glove (UK 9, US 9.5, J38399, Black/Granite)
+    <ul>
+      <li>0mm drop, 4mm stack</li>
+      <li>See <a href="https://ajoyfulprocession.wordpress.com/2012/05/31/merrell-mens-barefoot-water-current-glove/">these</a>
+<a href="http://www.anotherfnrunner.com/2012/06/merrell-barefoot-water-current-glove.html">reviews</a>.</li>
+    </ul>
+  </li>
+</ul>
+
 <!-- Generate the plots. -->
 <script type="text/javascript" src="./plot_runs.js" charset="utf-8"></script>
 
 
+</section>
 
 
-    <p class="footer">
+<footer class="site">
+  <a href="http://www.ardischeng.com/">icons by ardis</a>
+  /
+  
+  <a href="http://ethanschoonover.com/solarized">solarized</a>
+  /
+  <a href="http://validator.w3.org/check/referer">html</a>
+  /
+  <a href="http://jigsaw.w3.org/css-validator/check/referer">css</a>
+</footer>
 
-      <a href="http://ethanschoonover.com/solarized">solarized</a>
-      /
-      <a href="http://validator.w3.org/check/referer">xhtml</a>
-      /
-      <a href="http://jigsaw.w3.org/css-validator/check/referer">css3</a>
-    </p>
-
-
-  </div>
 
 </body>
 </html>

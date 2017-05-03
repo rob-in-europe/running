@@ -346,7 +346,7 @@ Plot.draw_many = function(data_file, prepare_data, plots) {
         });
 }
 
-var width = document.getElementById('content').offsetWidth * 0.6;
+var width = document.getElementsByClassName('plots')[0].offsetWidth;
 var height = 0.75 * width;
 var dims = { w: width - 75, h: height - 50,
              margin_x: 75, margin_y: 50,
