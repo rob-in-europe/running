@@ -56,6 +56,13 @@ huge number of [running shoes](http://fellrnr.com/wiki/Shoes).
 
 ## Running shoes
 
++2018: New Balance 880v7 (US 9, UK 8.5, M880BW7, Blue/Navy/Green)
+  + 10mm drop, 30mm cushion (heel), 20mm cushion (forefoot)
+  + See [these](https://www.solereview.com/new-balance-880-v7-review/)
+    [four](https://sunandsole.com/2017/04/12/review-new-balance-880v7/)
+    [shoe](http://www.belowthekneeshoes.com/new-balance-880v7-running-shoes-columbus-ga-fort-benning)
+    [reviews](https://www.runnersworld.com/shoe/new-balance-880v7-mens).
+  + Purchased at The Running Room, Calgary.
 + 2016: Merrell Bare Access 3 (UK 9, US 9.5, J06281, Granite/Lantern)
   + 0mm drop, 8mm cushion, 13.5mm stack
   + See [these](http://www.briankunkle.com/2015/03/merrell-bare-access-3-review.html)
